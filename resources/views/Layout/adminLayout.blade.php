@@ -21,15 +21,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="/css/all-skins.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/AdminLTE.css">
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <script>
-    $document.ready(function () {
-        $('#editor').ckeditor({
-            language: 'fa'
-        });
-    });
-  </script>
   </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -369,6 +360,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </span> -->
               </a>
          </li>
+          <li class="treeview">
+              <a href="{{ route('upload') }}"><i class="fa fa-link"></i> <span>آپلود فایل</span>
+              </a>
+          </li>
 
       </ul>
       <!-- /.sidebar-menu -->

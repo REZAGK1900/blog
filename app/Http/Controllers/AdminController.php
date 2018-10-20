@@ -43,9 +43,33 @@ class AdminController extends Controller
 
     public function insertPost(Request $request)
     {
-        $validation = \Validator::make($request->all(),[
-            ''
+        dd($request->input('description'));
+
+        $validator = \Validator::make($request->all(),[
+            'title' => 'required|min:10|max:150',
+            'category' => 'required',
+            'content' => 'required'
+        ],[
+            'title.required' => 'عنوان را وارد کنید',
+            'title.min' => 'طول عنوان کمتر از 10 کارکتر است',
+            'title.max' => 'طول عنوان کمتر از 150 کارکتر است',
+            'category.required' => 'باید یک دسته بندی انتخاب کنید',
+            'content.required' => 'وارد کردن محتوا ضروری است'
         ]);
+
+        if($validator->fails())
+        {
+            return back()->with(['errors' => $validator->errors()]);
+        }
+
+        $auther = "رضا";
+        $user_id = "1";
+        $res = Post::create(['title' => $request->input('title'), 'content' => $request->input('content'),
+                            'description' => $request->input('description'),
+                            'auther' => $auther, 'status' => $request->input('status'), 'slug' => $request->input('slug'),
+                            'category_id' => $request->input('category'), 'user_id' => $user_id]);
+
+        return back()->with('message' , 'پست شما با موفقت افزوده شد');
     }
 
     public function draftPost()
@@ -86,10 +110,6 @@ class AdminController extends Controller
     /*
      * Upload File
      */
-    public function upload()
-    {
-        return view('upload');
-    }
 
     public function uploadFile(Request $request)
     {
@@ -108,20 +128,27 @@ class AdminController extends Controller
         //return $path;
 
         $image = $request->file('image');
+
+        $imagePath = "/public/upload/";
+
         $input['imagename'] = time() . '.' . $image->getClientOriginalExtension();
-        $destinationPath = public_path('\upload\\');
-        $image->move($destinationPath, $input['imagename']);
-        $img = $destinationPath.$input['imagename'];
+        //$destinationPath = public_path() . '/upload';
+        $image->move($imagePath, $input['imagename']);
+        $img = $imagePath.$input['imagename'];
 
         Upload::create(['filePath' => $img]);
 
-        $lastImage = Upload::orderBy('created_at', 'desc')->first();
+        $lastImage = Upload::orderBy('ID', 'desc')->first();
 
-        return back()->with('message', 'تصویر شما با موفقیت آپلود شد.', 'lastImage', $lastImage);
+        return back()->with(['message' => 'تصویر شما با موفقیت آپلود شد.', 'lastImage' => $lastImage]);
 
     }
 
-
+    public function upload()
+    {
+        $uploads = Upload::all();
+        return view('upload')->with('uploads', $uploads);
+    }
 
     /**
      * Delete Post

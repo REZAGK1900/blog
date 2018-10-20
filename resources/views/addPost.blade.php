@@ -7,18 +7,33 @@
 @endsection
 @section('content')
     <script>
-        window.onload=function(){
-            $("#editor").ckeditor();
-        };
-
+        $document.ready(function () {
+            $('#editor').ckeditor({
+                language: 'fa'
+            });
+        });
     </script>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form action="{{ route('insertPost') }}" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <div class="form-group">
             <label for="title">عنوان</label>
-            <input type="text" required class="form-control" id="title" name="" placeholder="عنوان را وارد کنید">
+            <input type="text" required class="form-control" id="title" name="title" placeholder="عنوان را وارد کنید">
+        </div>
+        <div class="form-group">
+            <label for="title">اسلاگ</label>
+            <input type="text" required class="form-control" id="slug" name="slug" placeholder="اسلاگ را وارد کنید">
         </div>
         <div class="form-group">
             <label for="category">دسته بندی ها</label>
@@ -28,6 +43,16 @@
                 @endforeach
             </select>
         </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">وضعیت:</label>
+            <div class="col-sm-3">
+                <select name="status" class="form-control valid" aria-invalid="false">
+                    <option selected value="1">فعال</option>
+                    <option value="0">غیر فعال</option>
+                </select>
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="selectImage">انتخاب تصویر</label>
             <input type="file" name="image" class="form-control-file" id="selectImage">
@@ -47,9 +72,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body pad">
-                <form>
                     <textarea dir="rtl" name="content" id="editor" cols="30" rows="10"></textarea>
-                </form>
             </div>
         </div>
 
@@ -65,14 +88,6 @@
 
         <input type="submit" class="btn btn-primary btn-lg btn-block" value="ذخیره اصلاعات">
     </form>
-
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
-
-
-
 
 @endsection
 

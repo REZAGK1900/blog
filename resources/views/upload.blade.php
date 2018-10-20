@@ -29,8 +29,11 @@
         </div>
     </form>
 
-    @if (isset($_POST['submit']))
-        <img src="{{ $lastImage->filePath }}" alt="">
-    @endif
+    <div class="">
+        @foreach($uploads as $upload)
+            <img src="{{asset($upload->filePath)}}" alt="">
+        @endforeach
+    </div>
+
 
 @endsection
